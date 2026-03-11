@@ -139,7 +139,7 @@ df = load_gini()
 # ── Header ────────────────────────────────────────────────────────────────────
 
 st.markdown('<div class="header-eyebrow">Europa — Vermögensungleichheit</div>', unsafe_allow_html=True)
-st.markdown('<div class="main-title">less than<br>nothing</div>', unsafe_allow_html=True)
+st.markdown('<div class="main-title">less than nothing</div>', unsafe_allow_html=True)
 st.markdown("""
 <div class="subtitle">
   Germany presents itself as a social market economy — fair, stable, and middle-class.
