@@ -51,6 +51,7 @@ st.markdown("""
     letter-spacing: -0.04em;
     color: #e8e4dc;
     margin-bottom: 1.5rem;
+    white-space: nowrap;  /* no wrapping at all */
   }
 
   .subtitle {
@@ -58,17 +59,17 @@ st.markdown("""
     font-size: 0.85rem;
     color: #888;
     line-height: 1.7;
-    max-width: 560px;
+    max-width: 640px;
     margin-bottom: 3rem;
   }
 
   .subtitle-small {
-  font-family: 'DM Mono', monospace;
-  font-size: 0.7rem;
-  color: #888;
-  line-height: 1.6;
-  max-width: 560px;
-  margin-bottom: 1.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: #888;
+    line-height: 1.6;
+    max-width: 640px;
+    margin-bottom: 1.5rem;
 }
 
   .divider {
