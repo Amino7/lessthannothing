@@ -1,3 +1,9 @@
+# Raw source files — never commit these
+data/raw/
+
+# Staging layer — processed but not final
+data/processed/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
