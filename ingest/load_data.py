@@ -10,7 +10,7 @@ Run from project root:
 import os
 import requests
 
-RAW_DIR = os.path.join("data", "raw")
+RAW_DIR = os.path.join("../data", "raw")
 os.makedirs(RAW_DIR, exist_ok=True)
 
 BASE_URL = "https://ec.europa.eu/eurostat/api/dissemination/sdmx/2.1/data"

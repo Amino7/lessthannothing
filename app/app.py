@@ -128,7 +128,7 @@ df = load_gini()
 
 # ── Header ────────────────────────────────────────────────────────────────────
 
-st.markdown('<div class="header-eyebrow">Deutschland — Vermögensungleichheit</div>', unsafe_allow_html=True)
+st.markdown('<div class="header-eyebrow">Europa — Vermögensungleichheit</div>', unsafe_allow_html=True)
 st.markdown('<div class="main-title">less than<br>nothing</div>', unsafe_allow_html=True)
 st.markdown("""
 <div class="subtitle">
@@ -139,94 +139,85 @@ st.markdown("""
 
 st.markdown('<hr class="divider">', unsafe_allow_html=True)
 
-# ── Key stats row ─────────────────────────────────────────────────────────────
-
-latest_year = df["year"].max()
-latest_value = df[df["year"] == latest_year]["value"].values[0]
-earliest_year = df["year"].min()
-earliest_value = df[df["year"] == earliest_year]["value"].values[0]
-delta = latest_value - earliest_value
-delta_str = f"+{delta:.1f}" if delta > 0 else f"{delta:.1f}"
-
-col1, col2, col3 = st.columns(3)
-
-with col1:
-    st.markdown(f"""
-    <div class="stat-block">
-      <div class="stat-label">Gini — {latest_year}</div>
-      <div class="stat-value">{latest_value:.1f}</div>
-      <div class="stat-sub">coefficient of income inequality</div>
-    </div>
-    """, unsafe_allow_html=True)
-
-with col2:
-    st.markdown(f"""
-    <div class="stat-block">
-      <div class="stat-label">Change since {earliest_year}</div>
-      <div class="stat-value">{delta_str}</div>
-      <div class="stat-sub">points over {latest_year - earliest_year} years</div>
-    </div>
-    """, unsafe_allow_html=True)
-
-with col3:
-    st.markdown(f"""
-    <div class="stat-block">
-      <div class="stat-label">Scale</div>
-      <div class="stat-value">0 — 100</div>
-      <div class="stat-sub">0 = perfect equality / 100 = one person owns everything</div>
-    </div>
-    """, unsafe_allow_html=True)
-
-st.markdown('<hr class="divider">', unsafe_allow_html=True)
-
 # ── Chart ─────────────────────────────────────────────────────────────────────
 
 st.markdown('<div class="section-label">01 — Gini coefficient over time</div>', unsafe_allow_html=True)
 
-fig = go.Figure()
+available_countries = sorted(df["country_name"].unique())
+default_selection = ["DE"] if "DE" in available_countries else available_countries[:1]
 
-fig.add_trace(go.Scatter(
-    x=df["year"],
-    y=df["value"],
-    mode="lines+markers",
-    line=dict(color="#c8f000", width=2),
-    marker=dict(color="#c8f000", size=5),
-    hovertemplate="<b>%{x}</b><br>Gini: %{y:.1f}<extra></extra>",
-))
-
-fig.update_layout(
-    paper_bgcolor="#0a0a0a",
-    plot_bgcolor="#0a0a0a",
-    font=dict(family="DM Mono, monospace", color="#888", size=11),
-    margin=dict(l=0, r=0, t=20, b=0),
-    height=380,
-    xaxis=dict(
-        showgrid=False,
-        zeroline=False,
-        tickcolor="#333",
-        linecolor="#222",
-        tickfont=dict(color="#555"),
-    ),
-    yaxis=dict(
-        showgrid=True,
-        gridcolor="#1a1a1a",
-        zeroline=False,
-        tickcolor="#333",
-        linecolor="#222",
-        tickfont=dict(color="#555"),
-        range=[
-            df["value"].min() - 1,
-            df["value"].max() + 1
-        ],
-    ),
-    hoverlabel=dict(
-        bgcolor="#111",
-        bordercolor="#333",
-        font=dict(family="DM Mono, monospace", color="#e8e4dc"),
-    ),
+selected_countries = st.multiselect(
+    "Select countries to compare",
+    options=available_countries,
+    default=default_selection,
 )
 
-st.plotly_chart(fig, use_container_width=True)
+if not selected_countries:
+    st.info("Select at least one country to see the chart.")
+else:
+    df_sel = df[df["country_name"].isin(selected_countries)]
+
+    fig = go.Figure()
+    palette = px.colors.qualitative.Set2
+
+    for idx, country in enumerate(selected_countries):
+        country_df = df_sel[df_sel["country_name"] == country].sort_values("year")
+        color = palette[idx % len(palette)]
+
+        fig.add_trace(
+            go.Scatter(
+                x=country_df["year"],
+                y=country_df["value"],
+                mode="lines+markers",
+                name=country,
+                line=dict(color=color, width=2),
+                marker=dict(color=color, size=5),
+                hovertemplate="<b>%{x}</b><br>"
+                + f"{country} Gini: "  # label per country
+                + "%{y:.1f}<extra></extra>",
+            )
+        )
+
+    fig.update_layout(
+        paper_bgcolor="#0a0a0a",
+        plot_bgcolor="#0a0a0a",
+        font=dict(family="DM Mono, monospace", color="#888", size=11),
+        margin=dict(l=0, r=0, t=20, b=0),
+        height=380,
+        xaxis=dict(
+            showgrid=False,
+            zeroline=False,
+            tickcolor="#333",
+            linecolor="#222",
+            tickfont=dict(color="#555"),
+        ),
+        yaxis=dict(
+            showgrid=True,
+            gridcolor="#1a1a1a",
+            zeroline=False,
+            tickcolor="#333",
+            linecolor="#222",
+            tickfont=dict(color="#555"),
+            range=[
+                df_sel["value"].min() - 1,
+                df_sel["value"].max() + 1,
+            ],
+        ),
+        hoverlabel=dict(
+            bgcolor="#111",
+            bordercolor="#333",
+            font=dict(family="DM Mono, monospace", color="#e8e4dc"),
+        ),
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="left",
+            x=0,
+        ),
+    )
+
+    st.plotly_chart(fig, use_container_width=True)
 
 st.markdown("""
 <div class="footnote">

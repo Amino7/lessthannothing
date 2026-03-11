@@ -2,6 +2,7 @@
 data/raw/
 
 # Staging layer — processed but not final
+data/clean
 data/processed/
 
 # Byte-compiled / optimized / DLL files
