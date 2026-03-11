@@ -62,6 +62,15 @@ st.markdown("""
     margin-bottom: 3rem;
   }
 
+  .subtitle-small {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  color: #888;
+  line-height: 1.6;
+  max-width: 560px;
+  margin-bottom: 1.5rem;
+}
+
   .divider {
     border: none;
     border-top: 1px solid #222;
@@ -142,9 +151,13 @@ st.markdown('<hr class="divider">', unsafe_allow_html=True)
 # ── Chart ─────────────────────────────────────────────────────────────────────
 
 st.markdown('<div class="section-label">01 — Gini coefficient over time</div>', unsafe_allow_html=True)
-
+st.markdown("""
+<div class="subtitle-small">
+  The Gini coefficient measures income inequality on a scale from 0 (everyone equal) to 100 (one person has everything).
+</div>
+""", unsafe_allow_html=True)
 available_countries = sorted(df["country_name"].unique())
-default_selection = ["DE"] if "DE" in available_countries else available_countries[:1]
+default_selection = ["Germany"] if "Germany" in available_countries else available_countries[:1]
 
 selected_countries = st.multiselect(
     "Select countries to compare",
