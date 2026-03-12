@@ -121,10 +121,10 @@ st.markdown("""
     line-height: 1.6;
   }
 
-  /* Hide streamlit branding */
-  #MainMenu {visibility: hidden;}
+  /* Hide streamlit branding 
+  MainMenu {visibility: hidden;}
   footer {visibility: hidden;}
-  header {visibility: hidden;}
+  header {visibility: hidden;}*/
 </style>
 """, unsafe_allow_html=True)
 
@@ -155,6 +155,22 @@ st.markdown('<div class="section-label">01 — Gini coefficient over time</div>'
 st.markdown("""
 <div class="subtitle-small">
   The Gini coefficient measures income inequality on a scale from 0 (everyone equal) to 100 (one person has everything).
+</div>
+<div class="subtitle">
+  <strong>What the Eurostat income Gini includes</strong><br>
+  The GINI_HND (Household Net Disposable Income) includes:
+  <ul>
+    <li><span class="include-mark">✓</span> Wages and salaries</li>
+    <li><span class="include-mark">✓</span> Self-employment income</li>
+    <li><span class="include-mark">✓</span> Pension income</li>
+    <li><span class="include-mark">✓</span> Social transfers (unemployment, housing benefit etc.)</li>
+    <li><span class="include-mark">✓</span> Rental income (if declared)</li>
+    <li><span class="include-mark">✓</span> Interest and dividends (Kapitalerträge, if declared)</li>
+    <li><span class="exclude-mark">✗</span> Capital gains (rising property values, stock appreciation)</li>
+    <li><span class="exclude-mark">✗</span> Undeclared rental income</li>
+    <li><span class="exclude-mark">✗</span> Retained earnings inside a business you own</li>
+    <li><span class="exclude-mark">✗</span> Imputed rent (the value of living in your own property)</li>
+  </ul>
 </div>
 """, unsafe_allow_html=True)
 available_countries = sorted(df["country_name"].unique())
