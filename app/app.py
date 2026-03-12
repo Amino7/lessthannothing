@@ -255,3 +255,36 @@ st.markdown("""
   Measured at household level. A higher number means greater inequality.
 </div>
 """, unsafe_allow_html=True)
+
+
+# ── Wealth Gini Table ─────────────────────────────────────────────────────────
+
+st.markdown('<hr class="divider">', unsafe_allow_html=True)
+st.markdown('<div class="section-label">02 — Vermögens-Gini im Vergleich (2015)</div>', unsafe_allow_html=True)
+
+@st.cache_data
+def load_wealth_gini():
+    return pd.read_parquet("data/core/fact_gini_wealth.parquet")
+
+df_wealth = load_wealth_gini()
+df_wealth_2015 = (
+    df_wealth[df_wealth["year"] == 2015]
+    .sort_values("value", ascending=False)
+    .reset_index(drop=True)
+)
+df_wealth_2015.index += 1  # rank starts at 1
+
+st.dataframe(
+    df_wealth_2015[["country_name_german", "value"]].rename(columns={
+        "country_name_german": "Land",
+        "value": "Vermögens-Gini"
+    }),
+    use_container_width=True,
+)
+
+st.markdown("""
+<div class="footnote">
+  Quelle: gut-leben-in-deutschland, 2015. (https://www.gut-leben-in-deutschland.de/indicators/income/gini-coefficient-wealth/)
+  Gini-Koeffizient des Nettovermögens. 0 = vollständige Gleichheit, 100 = vollständige Ungleichheit.
+</div>
+""", unsafe_allow_html=True)
