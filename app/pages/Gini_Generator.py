@@ -99,7 +99,7 @@ def render_gini_explainer():
     with col2:
         st.markdown(f"""
         <div class="stat-block">
-          <div class="stat-label">Untere 5 Personen zusammen</div>
+          <div class="stat-label">Untere 5 Personen (untere 50%)</div>
           <div class="stat-value" style="font-size:1.8rem">{bottom5_share:.1f}%</div>
           <div class="stat-sub">€{wealth[:5].sum():,.0f} zusammen</div>
         </div>
