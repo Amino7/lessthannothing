@@ -13,7 +13,7 @@ def gini_to_distribution(gini: float, n: int = 10) -> np.ndarray:
     if g < 0.01:
         shares = np.ones(n) + np.random.uniform(-0.05, 0.05, n)
     else:
-        exponent = 1 + (g * 12)
+        exponent = 1 + (g ** 2) * 15
         base = np.array([(i / n) ** exponent for i in range(1, n + 1)])
         noise = np.random.uniform(0.7, 1.3, n)
         raw = base * noise
